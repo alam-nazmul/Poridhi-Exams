@@ -163,4 +163,13 @@ npm start
 npm i react-router-dom
 ```
 
+### Install axios for fetch all data from "backend" server
+```
+npm i axios
+```
+
+### Install for allow api request to use our application from our backend server
+```
+npm install course
+```
 

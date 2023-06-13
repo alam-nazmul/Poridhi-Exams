@@ -2,8 +2,8 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "root.js",    
-  "type": "module",   
+  "main": "root.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon root.js"
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "course": "^0.0.1",
     "express": "^4.18.2",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.22"
