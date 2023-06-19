@@ -11,8 +11,8 @@ Using network namespaces, administrators can create isolated network environment
 
 - Create a virtual machine on workstation by using KVM.
 - Create two namespaces.
-- Set the virtual ethernet port for both namespaces.
 - Make a connectivity between two virtual ethernet.
+- Set the virtual ethernet port for both namespaces.
 - Set the IP addresses on both virtual ethernet.
 - Enable / Lights up the virtual ethernet on both namespaces.
 - Check the IP reachibility.
@@ -43,15 +43,16 @@ ip link set veth0 netns green
 ip link set veth1 netns blue
 ```
 
-## *Make a connectivity between two virtual ethernet* ##
-```
-ip link add veth0 type veth peer name veth1
-```
 
 ## *Set the IP addresses on both virtual ethernet* ##
 ```
 ip -n green addr add 10.20.100.3/29 dev veth0
 ip -n blue addr add 10.20.100.4/29 dev veth1
+```
+
+## *Make a connectivity between two virtual ethernet* ##
+```
+ip link add veth0 type veth peer name veth1
 ```
 
 ## *Enable / Lights up the virtual ethernet on both namespaces* ##
