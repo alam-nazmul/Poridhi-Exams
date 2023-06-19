@@ -80,9 +80,11 @@ ping 10.20.100.4 -c3
 ## *Relevent logs* ##
 
 Check the namespaces
+
 ![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/07a9f698-1dec-4c92-8846-5cc2a82bd9cc)
 
 IP addresses for root, green and blue namespaces
+
 ![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/9b197748-41b0-40a9-a5e4-9d42bb695fdb)
 
 ![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/9258b5a5-f62e-4634-8efd-531d1b36bfac)
