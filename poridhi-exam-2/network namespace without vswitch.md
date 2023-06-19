@@ -76,3 +76,18 @@ Finally check the IP reachibility from Green namespace to Blue name space
 ```
 ping 10.20.100.4 -c3
 ```
+
+## *Relevent logs* ##
+
+Check the namespaces
+![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/07a9f698-1dec-4c92-8846-5cc2a82bd9cc)
+
+IP addresses for root, green and blue namespaces
+![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/9b197748-41b0-40a9-a5e4-9d42bb695fdb)
+
+![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/9258b5a5-f62e-4634-8efd-531d1b36bfac)
+
+![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/2415ef1b-ce0d-4163-a0f8-94b778581eed)
+
+Ping response between two namespaces
+![image](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/cde6e261-2e64-49b8-b112-cdd30cf79b2c)
