@@ -9,7 +9,8 @@ Using network namespaces, administrators can create isolated network environment
 
 ## *Diagram* ##
 
-![Alt text](<Screenshot from 2023-06-22 02-37-18.png>)
+![Screenshot from 2023-06-22 02-37-18](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/700a9f73-76dc-403e-b031-c9c8bc05aa58)
+
 
 
 ## Checklist
