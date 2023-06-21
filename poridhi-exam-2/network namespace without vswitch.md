@@ -7,6 +7,11 @@ Each network namespace has its own set of network interfaces, IP addresses, rout
 Using network namespaces, administrators can create isolated network environments for various programs or users, preventing interference or conflicts between them. It also facilitates the deployment of network virtualization and containerization technologies, where each container or virtual machine can operate in its own network namespace, assuring network isolation and security.
 
 
+## *Diagram* ##
+
+![Alt text](<Screenshot from 2023-06-22 02-37-18.png>)
+
+
 ## Checklist
 
 - Create a virtual machine on workstation by using KVM.
