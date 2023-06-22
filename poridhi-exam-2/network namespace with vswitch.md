@@ -101,10 +101,6 @@ ip netns exec ns212 ip addr add 100.100.200.6/24 dev veth3
 ip netns exec ns212 ip link set veth3 up
 ```
 
-## *Make the slave as virtual ether on bridge and light's up* ##
-```
-ip netns exec ns212 ip link set veth3 up
-```
 
 ## *Make the slave as virtual ether on bridge and light's up* ##
 ```
@@ -133,4 +129,20 @@ ping 100.100.200.6 -c3
 
 Check the namespaces
 
+
+![Screenshot from 2023-06-22 21-43-41](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/f7dc1817-4075-4c69-a58a-14a87fa81738)
+
+Check the IP addresses on both namespaces
+
+
+![Screenshot from 2023-06-22 21-44-09](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/f065fda5-9d08-480c-89ad-f420631ca69e)
+
+
+![Screenshot from 2023-06-22 21-44-35](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/3ec97036-8341-4e07-8743-3466e0d0fa5d)
+
+
+Ping response check
+
+
+![Screenshot from 2023-06-22 21-45-01](https://github.com/alam-nazmul/Poridhi-Exams/assets/103389594/757d57ec-1853-4b3a-8dc9-c77e6877ecec)
 
