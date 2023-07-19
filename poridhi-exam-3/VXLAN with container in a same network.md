@@ -246,3 +246,7 @@ Ping response check from containers
 Show all interfaces
 
 ![Interface deatils](image-7.png)
+
+Firewalld status
+
+![Firewalld rules](image-8.png)
