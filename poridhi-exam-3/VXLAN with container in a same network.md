@@ -225,12 +225,24 @@ systemctl enable container-container2.service --now
 
 Check the host IP address
 
+![Host machines IP address](image-1.png)
+
+Check the containers
+
+![Containers detail](image-4.png)
 
 Check the IP addresses on both containers
 
+![IP address on containers](image-3.png)
 
 Check the bridge interfaces
 
+![Bridge details](image-6.png)
 
-Ping response check
+Ping response check from containers
 
+![ping check from both containers](image-5.png)
+
+Show all interfaces
+
+![Interface deatils](image-7.png)
