@@ -250,3 +250,7 @@ Show all interfaces
 Firewalld status
 
 ![Firewalld rules](image-8.png)
+
+Container as service
+
+![service](image-9.png)
