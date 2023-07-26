@@ -44,8 +44,9 @@ Open vSwitch is widely used in various virtualization platforms, including OpenS
 - Add the veths with OVS.
 - Set the IP addresses on VETHs.
 - Set the MTU on VETHs.
-- Create containers.
-- Install necessary packages and modify the permission of ping response.
+- Create a custom containerfile.
+- Create containers from the containerfile.
+- Modify the permission of ping response.
 - Add IP addresses on the containers by using ovs-docker.
 - Create and lights up a tunnel with vxlan id, with another VM by using ovs.
 - Allow vxlan port on firewalld service.
@@ -119,3 +120,35 @@ ip address add 192.168.2.1/24 dev veth1
 ip link set dev veth0 up mtu 1450
 ip link set dev veth1 up mtu 1450
 ```
+
+## *Create a custom containerfile* ##
+```
+vim Containerfile
+    FROM ubuntu
+    RUN apt update
+    RUN apt install -y net-tools
+    RUN apt install -y iproute2
+    RUN apt install -y iputils-ping
+
+    CMD ["sleep", "30000000"]
+```
+
+## *Create an image from the containerfile* ##
+
+```
+podman build . -f Containerfile -t ubuntu_custom
+```
+
+## *Create containers* ##
+
+```
+podman run -dit --net none --name container1 localhost/ubuntu_custom sleep 3000000
+podman run -dit --net none --name container3 localhost/ubuntu_custom sleep 3000000
+```
+
+## *Modify the permission of ping response* ##
+
+```
+setcap cap_net_raw+p /usr/bin/ping
+```
+
