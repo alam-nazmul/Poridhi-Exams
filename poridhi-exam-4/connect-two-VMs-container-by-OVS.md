@@ -38,8 +38,7 @@ Open vSwitch is widely used in various virtualization platforms, including OpenS
 
 - Create two virtual machines on workstation by using KVM.
 - Set the hostname.
-- Install dependent packages.
-- Install the bridge utils on host machine.
+- Install dependent packages and bridge utils on host machine.
 - Install podman as container engine on both VM.
 - Create two bridges by using OVS and lights up.
 - Add the veths with OVS.
@@ -54,9 +53,29 @@ Open vSwitch is widely used in various virtualization platforms, including OpenS
 - Check the IP reachability.
 
 
+## *Create two virtual machines on workstation by using KVM* ##
 
 
-hostnamectl set-hostname node1
+I have provisioned RockyLinux-9 as a virtual machine.
+
+```
+[root@node-1 ~]# cat /etc/os-release | grep ID
+    ID="rocky"
+    ID_LIKE="rhel centos fedora"
+    VERSION_ID="9.2"
+    PLATFORM_ID="platform:el9"
+```
+
+## *Set the hostname* ##
+
+```
+hostnamectl set-hostname node-1
+
+```
+
+## *Install dependent packages* ##
+
+```
 dnf search nfv
 dnf install centos-release-nfv* -y
 dnf install openvswitch* -y --skip-broken
@@ -64,13 +83,39 @@ dnf search openvswitch
 dnf install network-scripts-openvswitch2.16.x86_64  -y  --skip-broken
 dnf install epel-release -y
 dnf install bridge-utils -y
-systemctl enable --now openvswitch.service 
+systemctl enable --now openvswitch.service
+```
+
+## *Install podman as container engine on both VM* ##
+
+```
+dnf install podman* -y
+```
+
+## *Create two bridges by using OVS and lights up.* ##
+
+```
 ovs-vsctl add-br ovs-br0
 ovs-vsctl add-br ovs-br1
+```
+
+## *Add the veths with OVS* ##
+
+```
 ovs-vsctl add-port ovs-br0 veth0 -- set interface veth0 type=internal
 ovs-vsctl add-port ovs-br1 veth1 -- set interface veth1 type=internal
+```
+
+## *Set the IP addresses on VETHs* ##
+
+```
 ip address add 192.168.1.1/24 dev veth0 
-ip address add 192.168.2.1/24 dev veth1 
+ip address add 192.168.2.1/24 dev veth1
+```
+
+## *Set the MTU on VETHs* ##
+
+```
 ip link set dev veth0 up mtu 1450
 ip link set dev veth1 up mtu 1450
-dnf install podman* -y
+```
