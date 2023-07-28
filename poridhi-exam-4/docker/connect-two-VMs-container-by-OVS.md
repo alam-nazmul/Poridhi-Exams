@@ -65,7 +65,7 @@ I have provisioned Ubuntu-20 as a virtual machine.
 ## *Set the hostname* ##
 
 ```
-hostnamectl set-hostname node-1
+sudo hostnamectl set-hostname node-1
 
 ```
 
@@ -79,35 +79,35 @@ sudo apt -y install net-tools openvswitch-switch
 ## *Install podman as container engine on both VM* ##
 
 ```
-dnf install docker.io -y
+sudo apt install docker.io -y
 ```
 
 ## *Create two bridges by using OVS and lights up.* ##
 
 ```
-ovs-vsctl add-br ovs-br0
-ovs-vsctl add-br ovs-br1
+sudo ovs-vsctl add-br ovs-br0
+sudo ovs-vsctl add-br ovs-br1
 ```
 
 ## *Add the veths with OVS* ##
 
 ```
-ovs-vsctl add-port ovs-br0 veth0 -- set interface veth0 type=internal
-ovs-vsctl add-port ovs-br1 veth1 -- set interface veth1 type=internal
+sudo ovs-vsctl add-port ovs-br0 veth0 -- set interface veth0 type=internal
+sudo ovs-vsctl add-port ovs-br1 veth1 -- set interface veth1 type=internal
 ```
 
 ## *Set the IP addresses on VETHs* ##
 
 ```
-ip address add 192.168.1.1/24 dev veth0 
-ip address add 192.168.2.1/24 dev veth1
+sudo ip address add 192.168.1.1/24 dev veth0 
+sudo ip address add 192.168.2.1/24 dev veth1
 ```
 
 ## *Set the MTU on VETHs* ##
 
 ```
-ip link set dev veth0 up mtu 1450
-ip link set dev veth1 up mtu 1450
+sudo ip link set dev veth0 up mtu 1450
+sudo ip link set dev veth1 up mtu 1450
 ```
 
 ## *Create a custom dpckerfile* ##
@@ -131,8 +131,8 @@ sudo docker build . -f DockerFile -t ubuntu_custom
 ## *Create containers* ##
 
 ```
-sudo docker run -dit --net none --name docker1 localhost/ubuntu_custom
-sudo docker run -dit --net none --name docker2 localhost/ubuntu_custom
+sudo docker run -dit --net none --name docker1 ubuntu_custom
+sudo docker run -dit --net none --name docker2 ubuntu_custom
 ```
 
 ## *Add IP addresses on the containers by using ovs-docker* ##
@@ -148,6 +148,28 @@ sudo ovs-docker add-port ovs-br1 eth0 docker2 --ipaddress=192.168.2.11/24 --gate
 ```
 sudo ovs-vsctl add-port ovs-br0 vxlan0 -- set interface vxlan0 type=vxlan options:remote_ip=172.16.7.225 options:key=1000
 sudo ovs-vsctl add-port ovs-br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=172.16.7.225 options:key=2000
+```
+
+## *Configure the NAT rules for veth0* ##
+
+```
+sudo iptables --append FORWARD --in-interface veth0 --jump ACCEPT
+sudo iptables --append FORWARD --out-interface veth0 --jump ACCEPT
+sudo iptables --table nat --append POSTROUTING --source 192.168.1.0/24 --jump MASQUERADE
+```
+
+## *Configure the NAT rules for veth1* ##
+
+```
+sudo iptables --append FORWARD --in-interface veth1 --jump ACCEPT
+sudo iptables --append FORWARD --out-interface veth1 --jump ACCEPT
+sudo iptables --table nat --append POSTROUTING --source 192.168.2.0/24 --jump MASQUERADE
+```
+
+## *Check the IPTABLES rules* ##
+
+```
+sudo iptables -t nat -L -n -v
 ```
 
 
@@ -169,7 +191,7 @@ I have provisioned Ubuntu-20 as a virtual machine.
 ## *Set the hostname* ##
 
 ```
-hostnamectl set-hostname node-2
+sudo hostnamectl set-hostname node-2
 
 ```
 
@@ -183,35 +205,35 @@ sudo apt -y install net-tools openvswitch-switch
 ## *Install podman as container engine on both VM* ##
 
 ```
-dnf install docker.io -y
+sudo apt install docker.io -y
 ```
 
 ## *Create two bridges by using OVS and lights up.* ##
 
 ```
-ovs-vsctl add-br ovs-br0
-ovs-vsctl add-br ovs-br1
+sudo ovs-vsctl add-br ovs-br0
+sudo ovs-vsctl add-br ovs-br1
 ```
 
 ## *Add the veths with OVS* ##
 
 ```
-ovs-vsctl add-port ovs-br0 veth0 -- set interface veth0 type=internal
-ovs-vsctl add-port ovs-br1 veth1 -- set interface veth1 type=internal
+sudo ovs-vsctl add-port ovs-br0 veth0 -- set interface veth0 type=internal
+sudo ovs-vsctl add-port ovs-br1 veth1 -- set interface veth1 type=internal
 ```
 
 ## *Set the IP addresses on VETHs* ##
 
 ```
-ip address add 192.168.1.1/24 dev veth0 
-ip address add 192.168.2.1/24 dev veth1
+sudo ip address add 192.168.1.1/24 dev veth0 
+sudo ip address add 192.168.2.1/24 dev veth1
 ```
 
 ## *Set the MTU on VETHs* ##
 
 ```
-ip link set dev veth0 up mtu 1450
-ip link set dev veth1 up mtu 1450
+sudo ip link set dev veth0 up mtu 1450
+sudo ip link set dev veth1 up mtu 1450
 ```
 
 ## *Create a custom dpckerfile* ##
@@ -235,8 +257,8 @@ sudo docker build . -f DockerFile -t ubuntu_custom
 ## *Create containers* ##
 
 ```
-sudo docker run -dit --net none --name docker3 localhost/ubuntu_custom
-sudo docker run -dit --net none --name docker4 localhost/ubuntu_custom
+sudo docker run -dit --net none --name docker3 ubuntu_custom
+sudo docker run -dit --net none --name docker4 ubuntu_custom
 ```
 
 ## *Add IP addresses on the containers by using ovs-docker* ##
@@ -252,4 +274,27 @@ sudo ovs-docker add-port ovs-br1 eth0 docker4 --ipaddress=192.168.2.12/24 --gate
 ```
 sudo ovs-vsctl add-port ovs-br0 vxlan0 -- set interface vxlan0 type=vxlan options:remote_ip=172.16.7.224 options:key=1000
 sudo ovs-vsctl add-port ovs-br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=172.16.7.224 options:key=2000
+```
+
+
+## *Configure the NAT rules for veth0* ##
+
+```
+sudo iptables --append FORWARD --in-interface veth0 --jump ACCEPT
+sudo iptables --append FORWARD --out-interface veth0 --jump ACCEPT
+sudo iptables --table nat --append POSTROUTING --source 192.168.1.0/24 --jump MASQUERADE
+```
+
+## *Configure the NAT rules for veth1* ##
+
+```
+sudo iptables --append FORWARD --in-interface veth1 --jump ACCEPT
+sudo iptables --append FORWARD --out-interface veth1 --jump ACCEPT
+sudo iptables --table nat --append POSTROUTING --source 192.168.2.0/24 --jump MASQUERADE
+```
+
+## *Check the IPTABLES rules* ##
+
+```
+sudo iptables -t nat -L -n -v
 ```
