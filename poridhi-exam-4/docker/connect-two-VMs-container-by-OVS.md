@@ -44,13 +44,12 @@ Open vSwitch is widely used in various virtualization platforms, including OpenS
 - Set the MTU on VETHs.
 - Create a custom containerfile.
 - Create containers from the containerfile.
-- Modify the permission of ping response.
 - Add IP addresses on the containers by using ovs-docker.
 - Create and lights up a tunnel with vxlan id, with another VM by using ovs.
 - Check the IP reachability.
 
 
-## *Create two virtual machines on workstation by using KVM* ##
+## *Create a virtual machines on workstation by using KVM* ##
 
 
 I have provisioned Ubuntu-20 as a virtual machine.
@@ -73,20 +72,14 @@ hostnamectl set-hostname node-1
 ## *Install dependent packages* ##
 
 ```
-dnf search nfv
-dnf install centos-release-nfv* -y
-dnf install openvswitch* -y --skip-broken
-dnf search openvswitch
-dnf install network-scripts-openvswitch2.16.x86_64  -y  --skip-broken
-dnf install epel-release -y
-dnf install bridge-utils -y
-systemctl enable --now openvswitch.service
+sudo apt update
+sudo apt -y install net-tools openvswitch-switch
 ```
 
 ## *Install podman as container engine on both VM* ##
 
 ```
-dnf install podman* -y
+dnf install docker.io -y
 ```
 
 ## *Create two bridges by using OVS and lights up.* ##
@@ -117,9 +110,9 @@ ip link set dev veth0 up mtu 1450
 ip link set dev veth1 up mtu 1450
 ```
 
-## *Create a custom containerfile* ##
+## *Create a custom dpckerfile* ##
 ```
-vim Containerfile
+vim DockerFile
     FROM ubuntu
     RUN apt update
     RUN apt install -y net-tools
@@ -132,19 +125,131 @@ vim Containerfile
 ## *Create an image from the containerfile* ##
 
 ```
-podman build . -f Containerfile -t ubuntu_custom
+sudo docker build . -f DockerFile -t ubuntu_custom
 ```
 
 ## *Create containers* ##
 
 ```
-podman run -dit --net none --name container1 localhost/ubuntu_custom sleep 3000000
-podman run -dit --net none --name container3 localhost/ubuntu_custom sleep 3000000
+sudo docker run -dit --net none --name docker1 localhost/ubuntu_custom
+sudo docker run -dit --net none --name docker2 localhost/ubuntu_custom
 ```
 
-## *Modify the permission of ping response* ##
+## *Add IP addresses on the containers by using ovs-docker* ##
 
 ```
-setcap cap_net_raw+p /usr/bin/ping
+sudo ovs-docker add-port ovs-br0 eth0 docker1 --ipaddress=192.168.1.11/24 --gateway=192.168.1.1
+sudo ovs-docker add-port ovs-br1 eth0 docker2 --ipaddress=192.168.2.11/24 --gateway=192.168.2.1
 ```
 
+
+## *Create and lights up a tunnel with vxlan id, with another VM by using ovs* ##
+
+```
+sudo ovs-vsctl add-port ovs-br0 vxlan0 -- set interface vxlan0 type=vxlan options:remote_ip=10.0.1.43 options:key=1000
+sudo ovs-vsctl add-port ovs-br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=10.0.1.43 options:key=2000
+```
+
+
+
+
+## *Create a virtual machines on workstation by using KVM* ##
+
+
+I have provisioned Ubuntu-20 as a virtual machine.
+
+```
+[root@node-1 ~]# cat /etc/os-release | grep ID
+    ID="rocky"
+    ID_LIKE="rhel centos fedora"
+    VERSION_ID="9.2"
+    PLATFORM_ID="platform:el9"
+```
+
+## *Set the hostname* ##
+
+```
+hostnamectl set-hostname node-2
+
+```
+
+## *Install dependent packages* ##
+
+```
+sudo apt update
+sudo apt -y install net-tools openvswitch-switch
+```
+
+## *Install podman as container engine on both VM* ##
+
+```
+dnf install docker.io -y
+```
+
+## *Create two bridges by using OVS and lights up.* ##
+
+```
+ovs-vsctl add-br ovs-br0
+ovs-vsctl add-br ovs-br1
+```
+
+## *Add the veths with OVS* ##
+
+```
+ovs-vsctl add-port ovs-br0 veth0 -- set interface veth0 type=internal
+ovs-vsctl add-port ovs-br1 veth1 -- set interface veth1 type=internal
+```
+
+## *Set the IP addresses on VETHs* ##
+
+```
+ip address add 192.168.1.1/24 dev veth0 
+ip address add 192.168.2.1/24 dev veth1
+```
+
+## *Set the MTU on VETHs* ##
+
+```
+ip link set dev veth0 up mtu 1450
+ip link set dev veth1 up mtu 1450
+```
+
+## *Create a custom dpckerfile* ##
+```
+vim DockerFile
+    FROM ubuntu
+    RUN apt update
+    RUN apt install -y net-tools
+    RUN apt install -y iproute2
+    RUN apt install -y iputils-ping
+
+    CMD ["sleep", "30000000"]
+```
+
+## *Create an image from the containerfile* ##
+
+```
+sudo docker build . -f DockerFile -t ubuntu_custom
+```
+
+## *Create containers* ##
+
+```
+sudo docker run -dit --net none --name docker3 localhost/ubuntu_custom
+sudo docker run -dit --net none --name docker4 localhost/ubuntu_custom
+```
+
+## *Add IP addresses on the containers by using ovs-docker* ##
+
+```
+sudo ovs-docker add-port ovs-br0 eth0 docker3 --ipaddress=192.168.1.12/24 --gateway=192.168.1.1
+sudo ovs-docker add-port ovs-br1 eth0 docker4 --ipaddress=192.168.2.12/24 --gateway=192.168.2.1
+```
+
+
+## *Create and lights up a tunnel with vxlan id, with another VM by using ovs* ##
+
+```
+sudo ovs-vsctl add-port ovs-br0 vxlan0 -- set interface vxlan0 type=vxlan options:remote_ip=10.0.1.43 options:key=1000
+sudo ovs-vsctl add-port ovs-br1 vxlan1 -- set interface vxlan1 type=vxlan options:remote_ip=10.0.1.43 options:key=2000
+```
