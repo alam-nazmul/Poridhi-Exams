@@ -53,7 +53,7 @@ Open vSwitch is widely used in various virtualization platforms, including OpenS
 ## *Create two virtual machines on workstation by using KVM* ##
 
 
-I have provisioned RockyLinux-9 as a virtual machine.
+I have provisioned Ubuntu-20 as a virtual machine.
 
 ```
 [root@node-1 ~]# cat /etc/os-release | grep ID
