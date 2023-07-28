@@ -46,6 +46,8 @@ Open vSwitch is widely used in various virtualization platforms, including OpenS
 - Create containers from the containerfile.
 - Add IP addresses on the containers by using ovs-docker.
 - Create and lights up a tunnel with vxlan id, with another VM by using ovs.
+- Configure the NAT rules for veth0
+- Configure the NAT rules for veth1
 - Check the IP reachability.
 
 
@@ -298,3 +300,6 @@ sudo iptables --table nat --append POSTROUTING --source 192.168.2.0/24 --jump MA
 ```
 sudo iptables -t nat -L -n -v
 ```
+
+
+## *Logs for the IP reachability* ##
