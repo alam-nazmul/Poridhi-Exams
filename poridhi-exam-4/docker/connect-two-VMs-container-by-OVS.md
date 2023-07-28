@@ -31,6 +31,7 @@ Open vSwitch is widely used in various virtualization platforms, including OpenS
 
 ## *Diagram* ##
 
+![Topological diagram](image.png)
 
 ## Checklist
 
@@ -303,3 +304,6 @@ sudo iptables -t nat -L -n -v
 
 
 ## *Logs for the IP reachability* ##
+
+![log-1](image-1.png)
+![log-2](image-2.png)
