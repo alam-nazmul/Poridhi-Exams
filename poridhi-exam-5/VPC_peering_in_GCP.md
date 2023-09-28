@@ -114,8 +114,30 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
     - Protocols and ports:
         - Specified protocols and ports
             - TCP
-            - 22,80,443
-
+            - 22
+- Click "Create Firewall rule"
+    - Name: allow-http-1
+    - Network: vpc-network-1
+    - Priority: 1000
+    - Action on match: Allow
+    - Target: All instances in the network
+    - Source filter: ipv4
+    - Source ipv4 range: 0.0.0.0/0
+    - Protocols and ports:
+        - Specified protocols and ports
+            - TCP
+            - 80, 443
+- Click "Create Firewall rule"
+    - Name: allow-ping-1
+    - Network: vpc-network-1
+    - Priority: 1000
+    - Action on match: Allow
+    - Target: All instances in the network
+    - Source filter: ipv4
+    - Source ipv4 range: 0.0.0.0/0
+    - Protocols and ports:
+        - Specified other protocols
+            - icmp
 
 ## Update the Firewall rules for 2nd VPC network ##
 
@@ -131,13 +153,58 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
     - Protocols and ports:
         - Specified protocols and ports
             - TCP
-            - 22,80,443
+            - 22
+- Click "Create Firewall rule"
+    - Name: allow-http-2
+    - Network: vpc-network-2
+    - Priority: 1000
+    - Action on match: Allow
+    - Target: All instances in the network
+    - Source filter: ipv4
+    - Source ipv4 range: 0.0.0.0/0
+    - Protocols and ports:
+        - Specified protocols and ports
+            - TCP
+            - 80, 443
+- Click "Create Firewall rule"
+    - Name: allow-ping-2
+    - Network: vpc-network-2
+    - Priority: 1000
+    - Action on match: Allow
+    - Target: All instances in the network
+    - Source filter: ipv4
+    - Source ipv4 range: 0.0.0.0/0
+    - Protocols and ports:
+        - Specified other protocols
+            - icmp
 
-
-## Install required packages on both instances ##
 
 ## Create 1st VPC network peering ##
+- Search "VPC network peering" in search box
+- Click "Create Connection"
+    - continue
+        - Name: test-peering-1
+        - Your VPC network: vpc-network-1
+        - Peered VPC Network: In this project
+        - VPC Network Name: vpc-network-2
 
+
+## Create 2nd VPC network peering ##
+- Search "VPC network peering" in search box
+- Click "Create Connection"
+    - continue
+        - Name: test-peering-2
+        - Your VPC network: vpc-network-2
+        - Peered VPC Network: In this project
+        - VPC Network Name: vpc-network-1
+
+## Install required packages on both instances ##
+- Search "vm instances dashboard" 
+    - Login both instances by using SSH
+        - sudo su
+        - dnf update -y
+        - dnf install nginx telnet -y
+        - systemctl enable nginx --now
 
 ## Check the connectivity by using ping on both instances ##
 
