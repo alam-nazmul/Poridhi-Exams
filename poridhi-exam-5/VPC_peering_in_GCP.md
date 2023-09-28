@@ -205,9 +205,17 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
         - dnf update -y
         - dnf install nginx telnet -y
         - systemctl enable nginx --now
+        - Allow services in OS firewalld
+            - firewall-cmd --per --add-service=http
+            - firewall-cmd --per --add-port=443/tcp
+            - firewall-cmd --reload
+
 
 ## Check the connectivity by using ping on both instances ##
+
+![Ping response from each VMs](<Screenshot from 2023-09-29 00-32-00.png>)
 
 
 ## Check the connectivity by using telnet on both instances ##
 
+![Telnet response from each VMs](<Screenshot from 2023-09-29 00-33-26.png>)
