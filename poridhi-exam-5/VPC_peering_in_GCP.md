@@ -4,7 +4,7 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
 
 ## _Prerequisites_ ##
 
-- OS: Rockylinux 8
+- OS: Rockylinux 9
 - Virtual Env: GCP
 - Firewalld: enabled
 - Allow port: 80/tcp, 443/tcp, 22/tcp
