@@ -13,6 +13,8 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
 
 ## *Diagram* ##
 
+![Topological diagram](image.png)
+
 
 ## Checklist ##
 - Create two VPC networks in different region with different prefix.
@@ -100,6 +102,7 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
         - Primary Internal ipv4 address:
             - Ephemeral (automatic)
 
+
 ## Update the Firewall rules for 1st VPC network ##
 
 - Search "Firewall" in search box
@@ -138,6 +141,7 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
     - Protocols and ports:
         - Specified other protocols
             - icmp
+
 
 ## Update the Firewall rules for 2nd VPC network ##
 
@@ -189,6 +193,7 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
         - VPC Network Name: vpc-network-2
 
 
+
 ## Create 2nd VPC network peering ##
 - Search "VPC network peering" in search box
 - Click "Create Connection"
@@ -197,6 +202,7 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
         - Your VPC network: vpc-network-2
         - Peered VPC Network: In this project
         - VPC Network Name: vpc-network-1
+
 
 ## Install required packages on both instances ##
 - Search "vm instances dashboard" 
@@ -209,6 +215,9 @@ Google Cloud Platform (GCP) offers the capability to peer virtual networks (VPCs
             - firewall-cmd --per --add-service=http
             - firewall-cmd --per --add-port=443/tcp
             - firewall-cmd --reload
+            - firewall-cmd --list-all
+        - To check all exposed port on the instances
+            - ss -tulpn 
 
 
 ## Check the connectivity by using ping on both instances ##
